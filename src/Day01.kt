@@ -1,21 +1,38 @@
+import kotlin.math.abs
+
 fun main() {
+
+    fun getSortedLists(input: List<String>): Pair<List<Int>, List<Int>> {
+        val leftList = mutableListOf<Int>()
+        val rightList = mutableListOf<Int>()
+        input.forEach { line ->
+            leftList.add(line.split("   ").first().toInt())
+            rightList.add(line.split("   ").last().toInt())
+        }
+
+        leftList.sort()
+        rightList.sort()
+
+        return Pair(leftList, rightList)
+    }
+
     fun part1(input: List<String>): Int {
-        return input.size
+        val (leftList, rightList) = getSortedLists(input);
+        return leftList.zip(rightList).sumOf { pair ->
+            abs(pair.first - pair.second)
+        }
     }
 
     fun part2(input: List<String>): Int {
-        return input.size
+        val (leftList, rightList) = getSortedLists(input);
+        return leftList.sumOf { leftNum -> leftNum * rightList.count { rightNum -> rightNum == leftNum} }
     }
 
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
 
-    // Or read a large test input from the `src/Day01_test.txt` file:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
+    println(part1(readInput("input/Day01_test")))
+    println(part1(readInput("input/Day01")))
 
-    // Read the input from the `src/Day01.txt` file.
-    val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+    println(part2(readInput("input/Day01_test")))
+    println(part2(readInput("input/Day01")))
 }
+
